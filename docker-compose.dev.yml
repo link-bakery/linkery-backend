@@ -1,0 +1,11 @@
+services:
+  linkery-database:
+    container_name: linkery-database
+    image: postgres:17.4-alpine3.21
+    restart: always
+    environment:
+      POSTGRES_USER: ${LINKERY_BACKEND_DATABASE_USER}
+      POSTGRES_PASSWORD: ${LINKERY_BACKEND_DATABASE_PASSWORD}
+      POSTGRES_DB: ${LINKERY_BACKEND_DATABASE_NAME}
+    ports:
+      - 5432:5432
