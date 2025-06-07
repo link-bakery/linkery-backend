@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { join } from 'path';
 import { Repository } from 'typeorm';
 import { RedirectEntity } from './entities/redirect.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -37,7 +36,11 @@ export class AppService {
     if (!redirection) {
       await this.requestLogRepo.save(requestLog);
       this.logger.warn(`Redirect failed! Path: '${path}'`);
-      return;
+      return {
+        url:
+          'https://linkery.madudev.de/docs/redirect-failed?originalPath=/' +
+          path,
+      };
     }
 
     requestLog.successfullyRedirected = true;
