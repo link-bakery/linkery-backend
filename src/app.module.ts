@@ -23,7 +23,7 @@ import { AppMiddleware } from './app.middleware';
       useFactory: (config: ConfigService) => {
         return {
           type: 'postgres',
-          host: 'localhost',
+          host: config.get('database.host') || 'localhost',
           port: 5432,
           username: config.get('database.user'),
           password: config.get('database.password'),
