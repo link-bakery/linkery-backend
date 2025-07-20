@@ -29,7 +29,8 @@ export class AdminService {
   }
 
   getStanderizedRedirectToLink(redirectTo: string) {
-    if (redirectTo.startsWith('https://')) redirectTo = redirectTo.slice(9);
+    if (redirectTo.startsWith('https://')) redirectTo = redirectTo.slice(8);
+    if (redirectTo.startsWith('http://')) redirectTo = redirectTo.slice(7);
     return redirectTo;
   }
 
