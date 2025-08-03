@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RedirectEntity } from 'src/entities/redirect.entity';
 import { Repository } from 'typeorm';
@@ -23,9 +23,26 @@ export class AdminService {
     return await this.redirectRepo.save(redirect);
   }
 
-  async deleteRedirect(path: string) {
-    path = this.getStanderizedPath(path);
-    return await this.redirectRepo.delete(path);
+  async editRedirect(id: number, editRedirect: RedirectEntity) {
+    const redirect = await this.redirectRepo.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (redirect === null) {
+      throw new HttpException('Redirect not found', HttpStatus.NOT_FOUND);
+    }
+
+    redirect.path = this.getStanderizedPath(editRedirect.path);
+    redirect.redirectTo = this.getStanderizedRedirectToLink(
+      editRedirect.redirectTo,
+    );
+    return await this.redirectRepo.save(redirect);
+  }
+
+  async deleteRedirect(id: number) {
+    return await this.redirectRepo.delete(id);
   }
 
   getStanderizedRedirectToLink(redirectTo: string) {

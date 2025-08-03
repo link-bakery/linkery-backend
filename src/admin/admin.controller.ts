@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RedirectEntity } from 'src/entities/redirect.entity';
@@ -19,9 +28,18 @@ export class AdminController {
     return await this.adminService.saveRedirect(redirect);
   }
 
-  @Delete('redirect')
+  @Put('redirect/:id')
   @UseGuards(AuthGuard)
-  async deleteRedirect(@Body('path') path: string) {
-    return await this.adminService.deleteRedirect(path);
+  async editRedirect(
+    @Param('id') id: number,
+    @Body() editRedirect: RedirectEntity,
+  ) {
+    return await this.adminService.editRedirect(id, editRedirect);
+  }
+
+  @Delete('redirect/:id')
+  @UseGuards(AuthGuard)
+  async deleteRedirect(@Param('id') id: number) {
+    return await this.adminService.deleteRedirect(id);
   }
 }
